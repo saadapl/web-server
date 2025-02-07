@@ -2,12 +2,23 @@ use std::{
     collections::HashMap,
     sync::{Arc, Mutex}
 };
-use actix_web::{web, App, Error,error::ErrorNotFound, HttpResponse, HttpServer, Responder};
-use serde::{Deserialize, Serialize};
+use actix_web::{
+    web,
+    App,
+    Error,
+    error::ErrorNotFound,
+    HttpResponse,
+    HttpServer,
+    Responder
+};
+use serde::{
+    Deserialize,
+    Serialize
+};
 
 #[derive(Serialize, Deserialize)]
 struct User {
-    name: String,
+    name: String
 }
 
 type UserDb = Arc<Mutex<HashMap<u32, User>>>;
@@ -29,7 +40,7 @@ async fn get_user(
 #[derive(Serialize)]
 struct CreateUserResponse {
     id: u32,
-    name: String,
+    name: String
 }
 
 #[actix_web::post("/users")]
@@ -43,7 +54,7 @@ async fn create_user(
     db.insert(new_id, user_data.into_inner());
     HttpResponse::Created().json(CreateUserResponse {
         id: new_id,
-        name,
+        name
     })
 }
 
